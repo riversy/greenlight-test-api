@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"flag"
 	"fmt"
+	"github.com/riversy/greenlight-test-api/internal/data"
 	"log"
 	"net/http"
 	"os"
@@ -30,6 +31,7 @@ type config struct {
 type application struct {
 	config config
 	logger *log.Logger
+	models data.Models
 }
 
 func main() {
@@ -64,8 +66,9 @@ func main() {
 	logger.Printf("database connection pool established")
 
 	app := &application{
-		cfg,
-		logger,
+		config: cfg,
+		logger: logger,
+		models: data.NewModels(db),
 	}
 
 	srv := &http.Server{
